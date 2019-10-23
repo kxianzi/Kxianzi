@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ 
+ <!-- 
+ mapper：映射
+ namespace:名称空间，全包名（全限定名）
+ id:标识
+ #{id}：传递进来的参数，类似于以前的占位符?
+  -->
+<mapper namespace="com.turing.mybatis.mapper.StudentMapper">
+
+	<select id="getStuById" resultType="com.turing.mybatis.entity.Student">
+		select id,s_name name,age,email from student where id = #{id}
+	</select>
+</mapper>
