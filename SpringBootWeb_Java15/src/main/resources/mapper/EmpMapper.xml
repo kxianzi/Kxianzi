@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.turing.sb.mapper.EmpMapper" >
+  <resultMap id="BaseResultMap" type="com.turing.sb.entity.Emp" >
+    <id column="EMPNO" property="empno" jdbcType="INTEGER" />
+    <result column="ENAME" property="ename" jdbcType="VARCHAR" />
+    <result column="JOB" property="job" jdbcType="VARCHAR" />
+    <result column="MGR" property="mgr" jdbcType="INTEGER" />
+    <result column="HIREDATE" property="hiredate" jdbcType="DATE" />
+    <result column="SAL" property="sal" jdbcType="INTEGER" />
+    <result column="COMM" property="comm" jdbcType="INTEGER" />
+    <result column="DEPTNO" property="deptno" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, COMM, DEPTNO
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.turing.sb.entity.EmpExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from emp
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from emp
+    where EMPNO = #{empno,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from emp
+    where EMPNO = #{empno,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.turing.sb.entity.EmpExample" >
+    delete from emp
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.turing.sb.entity.Emp" >
+    insert into emp (EMPNO, ENAME, JOB, 
+      MGR, HIREDATE, SAL, COMM, 
+      DEPTNO)
+    values (#{empno,jdbcType=INTEGER}, #{ename,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, 
+      #{mgr,jdbcType=INTEGER}, #{hiredate,jdbcType=DATE}, #{sal,jdbcType=INTEGER}, #{comm,jdbcType=INTEGER}, 
+      #{deptno,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.sb.entity.Emp" >
+    insert into emp
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="empno != null" >
+        EMPNO,
+      </if>
+      <if test="ename != null" >
+        ENAME,
+      </if>
+      <if test="job != null" >
+        JOB,
+      </if>
+      <if test="mgr != null" >
+        MGR,
+      </if>
+      <if test="hiredate != null" >
+        HIREDATE,
+      </if>
+      <if test="sal != null" >
+        SAL,
+      </if>
+      <if test="comm != null" >
+        COMM,
+      </if>
+      <if test="deptno != null" >
+        DEPTNO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="empno != null" >
+        #{empno,jdbcType=INTEGER},
+      </if>
+      <if test="ename != null" >
+        #{ename,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="mgr != null" >
+        #{mgr,jdbcType=INTEGER},
+      </if>
+      <if test="hiredate != null" >
+        #{hiredate,jdbcType=DATE},
+      </if>
+      <if test="sal != null" >
+        #{sal,jdbcType=INTEGER},
+      </if>
+      <if test="comm != null" >
+        #{comm,jdbcType=INTEGER},
+      </if>
+      <if test="deptno != null" >
+        #{deptno,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.turing.sb.entity.EmpExample" resultType="java.lang.Integer" >
+    select count(*) from emp
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update emp
+    <set >
+      <if test="record.empno != null" >
+        EMPNO = #{record.empno,jdbcType=INTEGER},
+      </if>
+      <if test="record.ename != null" >
+        ENAME = #{record.ename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.job != null" >
+        JOB = #{record.job,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mgr != null" >
+        MGR = #{record.mgr,jdbcType=INTEGER},
+      </if>
+      <if test="record.hiredate != null" >
+        HIREDATE = #{record.hiredate,jdbcType=DATE},
+      </if>
+      <if test="record.sal != null" >
+        SAL = #{record.sal,jdbcType=INTEGER},
+      </if>
+      <if test="record.comm != null" >
+        COMM = #{record.comm,jdbcType=INTEGER},
+      </if>
+      <if test="record.deptno != null" >
+        DEPTNO = #{record.deptno,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update emp
+    set EMPNO = #{record.empno,jdbcType=INTEGER},
+      ENAME = #{record.ename,jdbcType=VARCHAR},
+      JOB = #{record.job,jdbcType=VARCHAR},
+      MGR = #{record.mgr,jdbcType=INTEGER},
+      HIREDATE = #{record.hiredate,jdbcType=DATE},
+      SAL = #{record.sal,jdbcType=INTEGER},
+      COMM = #{record.comm,jdbcType=INTEGER},
+      DEPTNO = #{record.deptno,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.sb.entity.Emp" >
+    update emp
+    <set >
+      <if test="ename != null" >
+        ENAME = #{ename,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null" >
+        JOB = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="mgr != null" >
+        MGR = #{mgr,jdbcType=INTEGER},
+      </if>
+      <if test="hiredate != null" >
+        HIREDATE = #{hiredate,jdbcType=DATE},
+      </if>
+      <if test="sal != null" >
+        SAL = #{sal,jdbcType=INTEGER},
+      </if>
+      <if test="comm != null" >
+        COMM = #{comm,jdbcType=INTEGER},
+      </if>
+      <if test="deptno != null" >
+        DEPTNO = #{deptno,jdbcType=INTEGER},
+      </if>
+    </set>
+    where EMPNO = #{empno,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.sb.entity.Emp" >
+    update emp
+    set ENAME = #{ename,jdbcType=VARCHAR},
+      JOB = #{job,jdbcType=VARCHAR},
+      MGR = #{mgr,jdbcType=INTEGER},
+      HIREDATE = #{hiredate,jdbcType=DATE},
+      SAL = #{sal,jdbcType=INTEGER},
+      COMM = #{comm,jdbcType=INTEGER},
+      DEPTNO = #{deptno,jdbcType=INTEGER}
+    where EMPNO = #{empno,jdbcType=INTEGER}
+  </update>
+</mapper>

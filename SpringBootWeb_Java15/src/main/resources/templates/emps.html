@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{common::header('员工管理')}"></head>
+<body>
+    <!--导航条-->
+    <nav th:replace="~{common::topbar}"></nav>
+    <!--新增-->
+    <button class="btn btn-primary addBtn">新增</button>
+    <!--员工列表-->
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>编号</th>
+                <th>姓名</th>
+                <th>岗位</th>
+                <th>上级领导</th>
+                <th>入职日期</th>
+                <th>工资</th>
+                <th>奖金</th>
+                <th>部门</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="emp,stat:${empList}">
+                <td>[[${emp.empno}]]</td>
+                <td th:text="${emp.ename}"></td>
+                <td th:text="${emp.job}"></td>
+                <td th:text="${emp.mgr}"></td>
+                <td th:text="${#dates.format(emp.hiredate,'yyyy-MM-dd')}"></td>
+                <td th:text="${emp.sal}"></td>
+                <td th:text="${emp.comm}"></td>
+                <td th:text="${emp.deptno}"></td>
+                <td>
+                    <button class="btn btn-primary">编辑</button>
+                    <a th:href="@{/emp/}+${emp.empno}" class="btn btn-danger">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- 模态框 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">添加员工</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="/emp" method="post">
+                        <div class="form-group">
+                            <label for="exampleInputEname">姓名</label>
+                            <input name="ename" type="text" class="form-control" id="exampleInputEname" placeholder="姓名">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputJob">岗位</label>
+                            <input name="job" type="text" class="form-control" id="exampleInputJob" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputMgr">上级领导</label>
+                            <input name="mgr" type="text" class="form-control" id="exampleInputMgr" placeholder="上级领导">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputHiredate">入职日期</label>
+                            <input name="hiredate" type="date" class="form-control" id="exampleInputHiredate" placeholder="入职日期">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputSal">工资</label>
+                            <input name="sal" type="number" class="form-control" id="exampleInputSal" placeholder="工资">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputComm">奖金</label>
+                            <input name="comm" type="number" class="form-control" id="exampleInputComm" placeholder="奖金">
+                        </div>
+                        <div class="form-group">
+                            <label for="depts">部门</label>
+                            <!--<input name="deptno" type="text" class="form-control" id="exampleInputDeptno" placeholder="部门">-->
+                            <select name="deptno" id="depts" class="form-control">
+                                <option>销售部</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <button type="submit" class="btn btn-primary col-md-2 col-md-offset-5">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(".addBtn").click(function () {
+            //显示模态框
+            $("#myModal").modal('show');
+            //显示部门列表
+            $.ajax({
+                url:"/depts",
+                type:"GET",
+                dateType:"JSON",
+                success:function (json) {
+                    console.log(json);
+                    //填充到select中
+                    $("#depts").get(0).length = 0;
+                    //遍历json集合对象
+                    for(var i=0;i<json.length;i++){
+                        var op = new Option(json[i].dname);
+                        op.value = json[i].deptno;
+                        $("#depts").get(0).options.add(op);
+                    }
+                }
+            })
+        });
+    </script>
+</body>
+</html>
